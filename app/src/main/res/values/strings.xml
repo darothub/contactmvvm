@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ContactMVVM</string>
+    <string name="profileImage">contact image</string>
+</resources>
