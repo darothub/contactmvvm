@@ -3,14 +3,21 @@ package com.example.contactmvvm
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 class ContactRepository(application: Application) {
 
 
 
 
-    fun insert(contactEntity: ContactEntity?){
-        InsertContactAsyncTask(contactDao).execute(contactEntity)
+    fun insert(contactEntity: ContactEntity?, application: Application){
+//        InsertContactAsyncTask(contactDao).execute
+//        CoroutineTask(contactDao).runInBackground(contactEntity!!)
+//        CoroutineTask2(contactDao, contactEntity!!)
+        CoroutineTaskSingleton.getInstance(application).InsertTask(contactDao, contactEntity!!)
     }
 
     fun update(contactEntity: ContactEntity?){
@@ -28,6 +35,29 @@ class ContactRepository(application: Application) {
 //    fun getAllContact():LiveData<List<ContactEntity>>{
 //        return allContacts
 //    }
+
+    private class CoroutineTask(val contactDao:ContactDao):RunInBackground{
+        override fun runInBackground(contacts: ContactEntity) {
+            CoroutineScope(IO).launch {
+                contactDao.insert(contacts)
+            }
+        }
+
+
+    }
+
+    private class CoroutineTask2(){
+
+        companion object{
+            operator fun invoke(contactDao:ContactDao, contacts: ContactEntity){
+                CoroutineScope(IO).launch {
+                    contactDao.insert(contacts)
+                }
+            }
+        }
+
+
+    }
 
     private class InsertContactAsyncTask(val contactDao:ContactDao): AsyncTask<ContactEntity, Void, Void>(){
             override fun doInBackground(vararg contacts: ContactEntity): Void? {

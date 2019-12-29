@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 class ContactViewModel(application: Application):AndroidViewModel(application) {
     var repository = ContactRepository(application)
     private var allContacts = repository.allContacts
-    fun insert(contactEntity: ContactEntity){
-        repository.insert(contactEntity)
+    fun insert(contactEntity: ContactEntity, application: Application){
+        repository.insert(contactEntity, application)
     }
 
     fun update(contactEntity: ContactEntity){

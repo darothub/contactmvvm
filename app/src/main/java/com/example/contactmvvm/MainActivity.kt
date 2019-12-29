@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
 
         contactViewModel = ViewModelProviders.of(this).get(ContactViewModel::class.java)
-        contactViewModel!!.insert(ContactEntity("Coolman", "Tola", "M", "Atlantic View", "08060085192", R.drawable.maleavatar))
+        contactViewModel!!.insert(ContactEntity("Peaceduday", "LoveAcay", "M", "Atlantic View", "08060085192", R.drawable.femaleavatar), application)
         contactViewModel!!.getAllContacts()?.observe(this, object:Observer<List<ContactEntity?>?>{
             override fun onChanged(contactEntity: List<ContactEntity?>?) {
                 adapter.setContacts(contactEntity)
